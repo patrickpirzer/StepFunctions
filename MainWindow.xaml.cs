@@ -42,6 +42,7 @@ namespace P16_StepFunctions
             // DataContext gets the viewmodel.
             DataContext = vm;
 
+            // Prepares some testdata for the datagrid.
             vm.StepDataSource.Add(new StepData("<", 0, 0, new ArithmeticSignData("1", "<")));
             vm.StepDataSource.Add(new StepData("<=", 0.1, 0.8, new ArithmeticSignData("2", "<=")));
             vm.StepDataSource.Add(new StepData("<", 0.2, 1.2, new ArithmeticSignData("1", "<")));
