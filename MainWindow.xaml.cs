@@ -47,10 +47,6 @@ namespace P16_StepFunctions
             vm.StepDataSource.Add(new StepData("<", 0.2, 1.2, new ArithmeticSignData("1", "<")));
             vm.StepDataSource.Add(new StepData("<=", 0.3, 1.4, new ArithmeticSignData("2", "<=")));
             ChartDataRefresh();
-
-            // Binds the ItemsSource-property of the column for the lower comparer to the collection with the arithmetic signs.
-            col_LowerComparer.ItemsSource = vm.LowerComparers;
-            //col_LowerComparer2.ItemsSource = vm.LowerComparers2;
         }
 
         /// <summary>

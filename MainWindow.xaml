@@ -41,21 +41,28 @@
                   BeginningEdit="grd_stepdata_BeginningEdit"
                   ItemsSource="{Binding StepDataSource, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
-                <!--Lower comparer : Old version-->
-                <!--<DataGridTextColumn x:Name="col_LowerComparer"
-                                    Binding="{Binding LowerComparer, NotifyOnTargetUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Header="Lower comparer"/>-->
-                <!--Lower comparer : The ItemsSource-property is set in code-behind-->
+                <!--Lower comparer-->
                 <DataGridComboBoxColumn x:Name="col_LowerComparer"
                                         SelectedItemBinding="{Binding LowerComparer, NotifyOnTargetUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Header="Lower comparer"/>
-                
+                                        Header="Lower comparer">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.LowerComparers, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.LowerComparers, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>
+
                 <!--<DataGridComboBoxColumn x:Name="col_LowerComparer2"
                                         SelectedItemBinding="{Binding LowerComparer2, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         DisplayMemberPath="ArithmeticSignValue"
                                         Header="LowComp"/>-->
                 <DataGridComboBoxColumn x:Name="col_LowerComparer2"
-                                    SelectedItemBinding="{Binding DataContext.LowerComparer2, RelativeSource={RelativeSource AncestorType=DataGrid}, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedItemBinding="{Binding LowerComparer2, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     DisplayMemberPath="ArithmeticSignValue"
                                     Header="LowComp">
                     <DataGridComboBoxColumn.ElementStyle>
