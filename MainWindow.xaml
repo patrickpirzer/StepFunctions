@@ -1,0 +1,100 @@
+﻿<Window x:Class="P16_StepFunctions.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:winformchart="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
+        xmlns:local="clr-namespace:P16_StepFunctions"
+        xmlns:converters="clr-namespace:P16_StepFunctions.Converters"
+        mc:Ignorable="d"
+        Title="P16_StepFunctions"
+        Height="600"
+        Width="800"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <converters:DecimalConverter x:Key="decimalconverter"/>
+    </Window.Resources>
+    <Grid x:Name="maingrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!--DataGrid for insert and update of step function data-->
+        <DataGrid x:Name="grd_stepdata"
+                  Grid.Row="0"
+                  Grid.Column="0"
+                  Margin="5"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="True"
+                  CanUserDeleteRows="True"
+                  SelectionUnit="FullRow"
+                  RowEditEnding="grd_stepdata_RowEditEnding"
+                  CellEditEnding="grd_stepdata_CellEditEnding"
+                  PreviewKeyDown="grd_stepdata_PreviewKeyDown"
+                  AddingNewItem="grd_stepdata_AddingNewItem"
+                  BeginningEdit="grd_stepdata_BeginningEdit"
+                  ItemsSource="{Binding StepDataSource, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <!--Lower comparer : Old version-->
+                <!--<DataGridTextColumn x:Name="col_LowerComparer"
+                                    Binding="{Binding LowerComparer, NotifyOnTargetUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Header="Lower comparer"/>-->
+                <!--Lower comparer : The ItemsSource-property is set in code-behind-->
+                <DataGridComboBoxColumn x:Name="col_LowerComparer"
+                                        SelectedItemBinding="{Binding LowerComparer, NotifyOnTargetUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Header="Lower comparer"/>
+                
+                <!--<DataGridComboBoxColumn x:Name="col_LowerComparer2"
+                                        SelectedItemBinding="{Binding LowerComparer2, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        DisplayMemberPath="ArithmeticSignValue"
+                                        Header="LowComp"/>-->
+                <DataGridComboBoxColumn x:Name="col_LowerComparer2"
+                                    SelectedItemBinding="{Binding DataContext.LowerComparer2, RelativeSource={RelativeSource AncestorType=DataGrid}, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    DisplayMemberPath="ArithmeticSignValue"
+                                    Header="LowComp">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.LowerComparers2, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.LowerComparers2, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>
+                
+                <!--Lower bound-->
+                <DataGridTextColumn x:Name="col_LowerBound"
+                                    Binding="{Binding LowerBound, NotifyOnTargetUpdated=True, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource decimalconverter}}"
+                                    Header="Lower bound"/>
+                <!--Step value-->
+                <DataGridTextColumn x:Name="col_StepValue"
+                                    Binding="{Binding StepValue, NotifyOnTargetUpdated=True, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource decimalconverter}}"
+                                    Header="Value"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!--Chart for displaying the step function data-->
+        <WindowsFormsHost x:Name="host"
+                          Grid.Row="0"
+                          Grid.Column="1"
+                          Margin="5">
+            <!--<winformchart:Chart x:Name="myWinformChart"
+                                Dock="Fill">
+                <winformchart:Chart.Series>
+                    <winformchart:Series Name="series" ChartType="Line"/>
+                </winformchart:Chart.Series>
+                <winformchart:Chart.ChartAreas>
+                    <winformchart:ChartArea/>
+                </winformchart:Chart.ChartAreas>
+            </winformchart:Chart>-->
+        </WindowsFormsHost>
+    </Grid>
+</Window>
