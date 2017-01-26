@@ -18,21 +18,6 @@ namespace P16_StepFunctions
         private MainWindowViewModel vm = new MainWindowViewModel();
 
         /// <summary>
-        /// Field for checking if an item in the datagrid is inserted.
-        /// </summary>
-        private bool isInsertMode = false;
-
-        /// <summary>
-        /// Field for checking if an item in the datagrid is updated.
-        /// </summary>
-        private bool isUpdateMode = false;
-
-        /// <summary>
-        /// Field for checking if the datagrid's CurrentCell-property was changed.
-        /// </summary>
-        private bool currentCellChanged = false;
-
-        /// <summary>
         /// The constructor.
         /// </summary>
         public MainWindow()
@@ -80,7 +65,7 @@ namespace P16_StepFunctions
         /// <param name="e"></param>
         private void grd_stepdata_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
-            isInsertMode = true;
+            vm.IsInsertMode = true;
         }
 
         /// <summary>
@@ -90,7 +75,13 @@ namespace P16_StepFunctions
         /// <param name="e"></param>
         private void grd_stepdata_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            isUpdateMode = true;
+            // Sets IsUpdateMode only if no insert action is running.
+            // In case of an insert the events AddingNewItem and BeginningEdit are fired one by one.
+            // In case of update only BeginningEdit is fired.
+            if (!vm.IsInsertMode)
+            {
+                vm.IsUpdateMode = true;
+            }
         }
 
         /// <summary>
@@ -105,7 +96,9 @@ namespace P16_StepFunctions
             var uiElement = e.OriginalSource as UIElement;
             int maxColIndex = grd_stepdata.Columns.Count - 1;
 
-            if (e.Key == Key.Enter && uiElement != null && grd_stepdata.CurrentCell.Column.DisplayIndex < maxColIndex)
+            if (e.Key == Key.Enter &&
+                uiElement != null &&
+                grd_stepdata.CurrentCell.Column.DisplayIndex < maxColIndex)
             {
                 e.Handled = true;
                 uiElement.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
@@ -128,7 +121,7 @@ namespace P16_StepFunctions
         {
             // If the CurrentCell-property of the datagrid was changed by the method grd_stepdata_SetFocus the RowEditEnding-event is fired one more time.
             // But this method shall not be executed twice, so it is interrupted here.
-            if (currentCellChanged)
+            if (vm.CurrentCellChanged)
             {
                 return;
             }
@@ -136,8 +129,8 @@ namespace P16_StepFunctions
             // Just executed when the EditAction is not Cancel.
             if (e.EditAction == DataGridEditAction.Cancel)
             {
-                isInsertMode = false;
-                isUpdateMode = false;
+                vm.IsInsertMode = false;
+                vm.IsUpdateMode = false;
                 return;
             }
 
@@ -167,7 +160,7 @@ namespace P16_StepFunctions
         /// <param name="e"></param>
         private void grd_stepdata_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (!isInsertMode && isUpdateMode)
+            if (!vm.IsInsertMode && vm.IsUpdateMode)
             {
                 // Refreshes the chart control while update of an existing datagrid item.
                 ChartDataRefresh();
@@ -183,26 +176,26 @@ namespace P16_StepFunctions
 
             // Sets the rowindex for insert.
             // To the first cell in the adding row.
-            if (isInsertMode)
+            if (vm.IsInsertMode)
                 rowIndex = grd_stepdata.Items.Count - 1;
 
             // Sets the rowindex for update.
             // Same cell but the next row.
-            if (!isInsertMode && isUpdateMode)
+            if (!vm.IsInsertMode && vm.IsUpdateMode)
                 rowIndex = grd_stepdata.Items.IndexOf(grd_stepdata.CurrentItem);
 
             grd_stepdata.Focus();
-            currentCellChanged = true;
+            vm.CurrentCellChanged = true;
             grd_stepdata.CurrentCell = new DataGridCellInfo(grd_stepdata.Items[rowIndex], grd_stepdata.Columns[0]);
-            currentCellChanged = false;
+            vm.CurrentCellChanged = false;
 
             if (grd_stepdata.SelectionUnit == DataGridSelectionUnit.FullRow)
             {
                 grd_stepdata.SelectedIndex = rowIndex; // Just work while the datagrid's SelectionUnit is "FullRow", not with "Cell"
             }
 
-            isInsertMode = false;
-            isUpdateMode = false;
+            vm.IsInsertMode = false;
+            vm.IsUpdateMode = false;
         }
 
         /// <summary>

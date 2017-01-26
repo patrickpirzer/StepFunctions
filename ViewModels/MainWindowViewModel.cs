@@ -23,6 +23,9 @@ namespace P16_StepFunctions.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
+            IsInsertMode = false;
+            IsUpdateMode = false;
+            CurrentCellChanged = false;
             FillLowerComparersList();
             FillLowerComparerItemsList();
         }
@@ -49,6 +52,21 @@ namespace P16_StepFunctions.ViewModels
         /// Gets the list with the arithmetic lower comparers.
         /// </summary>
         public ObservableCollection<ArithmeticSignData> LowerComparerItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets if an item in the datagrid is inserted.
+        /// </summary>
+        public bool IsInsertMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets if an item in the datagrid is updated.
+        /// </summary>
+        public bool IsUpdateMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the datagrid's CurrentCell-property was changed.
+        /// </summary>
+        public bool CurrentCellChanged { get; set; }
 
         /// <summary>
         /// Informs the target which is bound to a property, that it's source was changed and that it shall update.
