@@ -1,4 +1,5 @@
 ﻿using P16_StepFunctions.ViewModels;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -7,7 +8,7 @@ using System.Windows.Input;
 namespace P16_StepFunctions
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Class for the interaction logic of the window.
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -43,10 +44,16 @@ namespace P16_StepFunctions
             DataContext = vm;
 
             // Prepares some testdata for the datagrid.
-            vm.StepDataSource.Add(new StepData("<", 0, 0, new ArithmeticSignData("1", "<")));
-            vm.StepDataSource.Add(new StepData("<=", 0.1, 0.8, new ArithmeticSignData("2", "<=")));
-            vm.StepDataSource.Add(new StepData("<", 0.2, 1.2, new ArithmeticSignData("1", "<")));
-            vm.StepDataSource.Add(new StepData("<=", 0.3, 1.4, new ArithmeticSignData("2", "<=")));
+            //vm.StepDataSource.Add(new StepData("<", 0, 0, new ArithmeticSignData("1", "<")));
+            //vm.StepDataSource.Add(new StepData("<=", 0.1, 0.8, new ArithmeticSignData("2", "<=")));
+            //vm.StepDataSource.Add(new StepData("<", 0.2, 1.2, new ArithmeticSignData("1", "<")));
+            //vm.StepDataSource.Add(new StepData("<=", 0.3, 1.4, new ArithmeticSignData("2", "<=")));
+
+            vm.StepDataSource.Add(new StepData("<", 0, 0, vm.LowerComparerItems.FirstOrDefault(x => x.ArithmeticSignKey == "1")));
+            vm.StepDataSource.Add(new StepData("<=", 0.1, 0.8, vm.LowerComparerItems.FirstOrDefault(x => x.ArithmeticSignKey == "2")));
+            vm.StepDataSource.Add(new StepData("<", 0.2, 1.2, vm.LowerComparerItems.FirstOrDefault(x => x.ArithmeticSignKey == "1")));
+            vm.StepDataSource.Add(new StepData("<=", 0.3, 1.4, vm.LowerComparerItems.FirstOrDefault(x => x.ArithmeticSignKey == "2")));
+
             ChartDataRefresh();
         }
 
@@ -96,7 +103,9 @@ namespace P16_StepFunctions
             // With the Enter-key the user can navigate in a gridrow from one cell to the next.
             // When the gridrow's final cell was reached, the cursor jumps to the next gridrow.
             var uiElement = e.OriginalSource as UIElement;
-            if (e.Key == Key.Enter && uiElement != null && grd_stepdata.CurrentCell.Column.DisplayIndex < 2)
+            int maxColIndex = grd_stepdata.Columns.Count - 1;
+
+            if (e.Key == Key.Enter && uiElement != null && grd_stepdata.CurrentCell.Column.DisplayIndex < maxColIndex)
             {
                 e.Handled = true;
                 uiElement.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
@@ -135,18 +144,20 @@ namespace P16_StepFunctions
             // Refreshes the chart control.
             ChartDataRefresh();
 
-            // Sets the focus to the first cell of the gridrow for adding data.
-            grd_stepdata_SetFocus();
-
+            // Clears the selected cells.
             if (grd_stepdata.SelectionUnit == DataGridSelectionUnit.Cell)
             {
-                grd_stepdata.SelectedCells.Clear(); // Just work while the datagrid's SelectionUnit is "Cell"
+                grd_stepdata.SelectedCells.Clear(); // Just works while the datagrid's SelectionUnit is "Cell"
             }
 
+            // Clears the selected items (= rows).
             if (grd_stepdata.SelectionUnit == DataGridSelectionUnit.FullRow)
             {
-                grd_stepdata.SelectedItems.Clear(); // Just work while the datagrid's SelectionUnit is "FullRow"
+                grd_stepdata.SelectedItems.Clear(); // Just works while the datagrid's SelectionUnit is "FullRow"
             }
+
+            // Sets the focus to the first cell of the gridrow for adding data.
+            grd_stepdata_SetFocus();
         }
 
         /// <summary>

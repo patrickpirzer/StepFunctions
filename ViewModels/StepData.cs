@@ -33,19 +33,24 @@
         /// <param name="lowerComparer">The arithmetic comparer for the lower bound.</param>
         /// <param name="lowerBound">The lower bound.</param>
         /// <param name="stepValue">The assigned value.</param>
-        /// <param name="lowerComparer2">The arithmetic comparer for the lower bound.</param>
-        public StepData(string lowerComparer, double lowerBound, double stepValue, ArithmeticSignData lowerComparer2)
+        /// <param name="selectedLowerComparer">The selected arithmetic comparer for the lower bound.</param>
+        public StepData(string lowerComparer, double lowerBound, double stepValue, ArithmeticSignData selectedLowerComparer)
         {
             LowerComparer = lowerComparer;
+            SelectedLowerComparer = selectedLowerComparer;
             LowerBound = lowerBound;
             StepValue = stepValue;
-            LowerComparer2 = lowerComparer2;
         }
 
         /// <summary>
         /// Gets or sets the lower comparer.
         /// </summary>
         public string LowerComparer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selected lower comparer.
+        /// </summary>
+        public ArithmeticSignData SelectedLowerComparer { get; set; }
 
         /// <summary>
         /// Gets or sets the lower bound.
@@ -56,11 +61,6 @@
         /// Gets or sets the assigned value.
         /// </summary>
         public double StepValue { get; set; }
-
-        /// <summary>
-        /// Gets or sets the lower comparer.
-        /// </summary>
-        public ArithmeticSignData LowerComparer2 { get; set; }
 
     }
 }

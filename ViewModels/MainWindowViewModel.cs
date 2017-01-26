@@ -24,7 +24,7 @@ namespace P16_StepFunctions.ViewModels
         public MainWindowViewModel()
         {
             FillLowerComparersList();
-            FillLowerComparersList2();
+            FillLowerComparerItemsList();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace P16_StepFunctions.ViewModels
         /// <summary>
         /// Gets the list with the arithmetic lower comparers.
         /// </summary>
-        public ObservableCollection<ArithmeticSignData> LowerComparers2 { get; set; }
+        public ObservableCollection<ArithmeticSignData> LowerComparerItems { get; set; }
 
         /// <summary>
         /// Informs the target which is bound to a property, that it's source was changed and that it shall update.
@@ -73,11 +73,11 @@ namespace P16_StepFunctions.ViewModels
         /// <summary>
         /// Fills the list with the arithmetic lower comparers.
         /// </summary>
-        private void FillLowerComparersList2()
+        private void FillLowerComparerItemsList()
         {
-            LowerComparers2 = new ObservableCollection<ArithmeticSignData>();
-            LowerComparers2.Add(new ArithmeticSignData("1", "<"));
-            LowerComparers2.Add(new ArithmeticSignData("2", "<="));
+            LowerComparerItems = new ObservableCollection<ArithmeticSignData>();
+            LowerComparerItems.Add(new ArithmeticSignData("1", "<"));
+            LowerComparerItems.Add(new ArithmeticSignData("2", "<="));
         }
 
     }

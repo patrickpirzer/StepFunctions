@@ -57,22 +57,25 @@
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
 
-                <!--<DataGridComboBoxColumn x:Name="col_LowerComparer2"
-                                        SelectedItemBinding="{Binding LowerComparer2, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        DisplayMemberPath="ArithmeticSignValue"
-                                        Header="LowComp"/>-->
-                <DataGridComboBoxColumn x:Name="col_LowerComparer2"
-                                    SelectedItemBinding="{Binding LowerComparer2, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <!--Lower comparer
+                    Attention!
+                    The property SelectedLowerComparer is part of the class StepData (which in turn is part of StepDataSource - the source of the
+                    datagrid).
+                    So it's possible to bind the SelectedItemBinding directly to the property.
+                    Because the source LowerComparerItems for the comboboxitems is part of MainWindowViewModel and not of StepData a
+                    reference with "DataContext" is needed for the binding of the ItemsSource.-->
+                <DataGridComboBoxColumn x:Name="cbc_LowerComparer"
+                                    SelectedItemBinding="{Binding SelectedLowerComparer, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     DisplayMemberPath="ArithmeticSignValue"
-                                    Header="LowComp">
+                                    Header="Lower Comparer">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
-                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.LowerComparers2, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.LowerComparerItems, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                         </Style>
                     </DataGridComboBoxColumn.ElementStyle>
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="ComboBox">
-                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.LowerComparers2, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.LowerComparerItems, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>

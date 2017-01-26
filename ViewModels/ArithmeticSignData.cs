@@ -25,8 +25,14 @@
             ArithmeticSignValue = value;
         }
 
+        /// <summary>
+        /// The key of the arithmetic sign.
+        /// </summary>
         public string ArithmeticSignKey { get; set; }
 
+        /// <summary>
+        /// The value of the arithmetic sign.
+        /// </summary>
         public string ArithmeticSignValue { get; set; }
 
     }
